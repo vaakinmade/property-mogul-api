@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'storages',
     'rest_framework',
     'listings',
 ]
@@ -72,6 +73,27 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'mogul.wsgi.application'
+
+if 'DYNO' in os.environ:
+    AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME', cast=str)
+    AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID', cast=str)
+    AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY', cast=str)
+    
+    AWS_S3_OBJECT_PARAMETERS = {
+        'CacheControl': 'max-age=86400',
+    }
+
+    STATICFILES_LOCATION = 'static'
+    AWS_S3_CUSTOM_DOMAIN = '{}.s3.amazonaws.com'.format(AWS_STORAGE_BUCKET_NAME)
+    STATIC_URL = "https://{}/{}/".format(AWS_S3_CUSTOM_DOMAIN, STATICFILES_LOCATION)
+    STATICFILES_STORAGE = 'mogul.customstorages.StaticStorage'
+
+    MEDIAFILES_LOCATION = 'media'
+    DEFAULT_FILE_STORAGE = 'mogul.customstorages.MediaStorage'
+    MEDIA_URL = "https://{}/{}/".format(AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
+else:
+    STATIC_URL = '/static/'
+    MEDIA_URL = '/media/'
 
 
 # Database
@@ -127,6 +149,14 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+
+STATIC_URL = os.environ.get('STATIC_URL', STATIC_URL)
+STATIC_ROOT = 'staticfiles'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'assets')]
+
+MEDIA_URL = os.environ.get('MEDIA_URL', MEDIA_URL)
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 # Static files (CSS, JavaScript, Images)
