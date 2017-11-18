@@ -11,11 +11,25 @@ class Listing(models.Model):
 	bedroom = models.IntegerField()
 	bathroom = models.IntegerField()
 	added_by = models.ForeignKey(User)
-	status = models.CharField(max_length=225)
-	listing_type = models.CharField(max_length=225)
+	
+	LISTING_STATUS = (
+	    ('for sale','For Sale'),
+	    ('for rent', 'For Rent'),
+	)
+
+	LISTING_TYPE = (
+    	('apartments','Apartments'),
+    	('houses', 'Houses'),
+    	('studios', 'Studios'),
+    	('commercial', 'Commercial'),
+	)
+	
+	status = models.CharField(max_length=25,
+								choices=LISTING_STATUS,
+								default='Property Status')
+	listing_type = models.CharField(max_length=25,
+									choices=LISTING_TYPE,
+									default='Property Type')
 	
 	def __str__(self):
 		return self.name
-
-	def get_absolute_url(self):
-   	    return reverse('listings:detail', kwargs={'pk': self.pk})
