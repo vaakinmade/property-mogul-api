@@ -13,5 +13,15 @@ class ListCreateListing(generics.ListCreateAPIView):
 
 class RetrieveUpdateDestroyListing(generics.RetrieveUpdateDestroyAPIView):
 	queryset = models.Listing.objects.all()
-	serializer_class = serializers.ListingSerializer
+	serializer_class = serializers.ListingDetailSerializer
+
+
+class RetrieveUpdateDestroyImage(generics.RetrieveUpdateDestroyAPIView):
+	queryset = models.Image.objects.all()
+	serializer_class = serializers.ImageSerializer
+
+
+class ListCreateImage(generics.ListCreateAPIView):
+	queryset = models.Image.objects.all()
+	serializer_class = serializers.ImageSerializer
 
