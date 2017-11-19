@@ -8,5 +8,5 @@ urlpatterns = [
 		name='listing_detail'),
 	url(r'^images/(?P<pk>\d+)/$', views.RetrieveUpdateDestroyImage.as_view(), name="image_view"),
 	url(r'^images/$', views.ListCreateImage.as_view(), name="image_list"),
-	
+	url(r'^search/$', views.SearchListView.as_view(), name='search'),	
 ]
