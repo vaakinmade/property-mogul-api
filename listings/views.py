@@ -3,6 +3,7 @@ from django.db.models import Q
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.core.serializers import serialize
 
 from . import models
 from . import serializers
@@ -36,21 +37,23 @@ class SearchListView(generics.ListAPIView):
 		bedroom = self.request.GET.get('bedroom', None)
 		bathroom = self.request.GET.get('bathroom', None)
 		status = self.request.GET.get('status', None)
-		print ("location", location)
 
 		queryset = models.Listing.objects.filter(Q(town=location,
-													listing_type=listing_type,
-													bedroom=bedroom,
-													bathroom=bathroom) |
+													#listing_type=listing_type,
+													#bedroom=bedroom,
+													#bathroom=bathroom
+													) |
 												Q(state=location,
-													listing_type=listing_type,
-													bedroom=bedroom,
-													bathroom=bathroom)
+													#listing_type=listing_type,
+													#bedroom=bedroom,
+													#bathroom=bathroom
+													)
 												)
+		print("queryset", queryset)
 		return queryset
 
-	def get_serializer_class(self):
-		response = serializers.serialize("json", self.get_queryset())
+	def get(self, request, format=None):
+		response = serialize("python", self.get_queryset())
 		return Response(response)
 
 
