@@ -9,7 +9,7 @@ class Listing(models.Model):
 	town = models.CharField(max_length=225)
 	state = models.CharField(max_length=225)
 	bedroom = models.IntegerField()
-	price = models.DecimalField(max_digits=5, decimal_places=2)
+	price = models.DecimalField(max_digits=12, decimal_places=2)
 	added_by = models.ForeignKey(User)
 	description = models.TextField(default="")
 	features = models.TextField(default="")
