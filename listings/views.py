@@ -30,6 +30,7 @@ class ListCreateImage(generics.ListCreateAPIView):
 
 
 class SearchListView(generics.ListAPIView):
+	serializer_class = serializers.ListingSerializer
 
 	def get_queryset(self):
 		location = self.request.GET.get('location', None)
@@ -52,9 +53,9 @@ class SearchListView(generics.ListAPIView):
 		print("queryset", queryset)
 		return queryset
 
-	def get(self, request, format=None):
-		response = serialize("python", self.get_queryset())
-		return Response(response)
+	# def get(self, request, format=None):
+	# 	response = serialize("python", self.get_queryset())
+	# 	return Response(response)
 
 
 
