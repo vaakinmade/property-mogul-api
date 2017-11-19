@@ -18,7 +18,7 @@ class ListingSerializer(serializers.ModelSerializer):
 			'status',
 			'listing_type',
 			'bedroom',
-			'bathroom',
+			'price',
 			'added_by',
 		)
 		model = models.Listing
@@ -34,7 +34,7 @@ class ListingDetailSerializer(serializers.ModelSerializer):
 			'status',
 			'listing_type',
 			'bedroom',
-			'bathroom',
+			'price',
 			'description',
 			'features',
 			'added_by',
