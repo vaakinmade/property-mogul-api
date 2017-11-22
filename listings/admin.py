@@ -1,8 +1,8 @@
 from django.contrib import admin
 
-from .models import Listing, Image
+from .models import Listing, ListingImage
 
 
 admin.site.register(Listing)
-admin.site.register(Image)
+admin.site.register(ListingImage)
 
