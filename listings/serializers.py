@@ -50,6 +50,6 @@ class ImageSerializer(serializers.ModelSerializer):
 			'listing',
 			'created_at'
 		)
-		model = models.Image
+		model = models.ListingImage
 
 
