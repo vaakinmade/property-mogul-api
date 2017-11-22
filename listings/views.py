@@ -23,12 +23,12 @@ class RetrieveUpdateDestroyListing(generics.RetrieveUpdateDestroyAPIView):
 
 
 class RetrieveUpdateDestroyImage(generics.RetrieveUpdateDestroyAPIView):
-	queryset = models.Image.objects.all()
+	queryset = models.ListingImage.objects.all()
 	serializer_class = serializers.ImageSerializer
 
 
 class ListCreateImage(generics.ListCreateAPIView):
-	queryset = models.Image.objects.all()
+	queryset = models.ListingImage.objects.all()
 	serializer_class = serializers.ImageSerializer
 
 
@@ -40,9 +40,9 @@ class SearchListView(generics.ListAPIView):
 		values_dict = {
 			'listing_type__iexact': self.request.GET.get('listing_type', None),
 			'status__iexact': self.request.GET.get('status', None),
-			#'bedroom': self.request.GET.get('bedroom', None),
-			#'price__lte': self.request.GET.get('max_price', None),
-			#'price__gte': self.request.GET.get('min_price', None)
+			'bedroom': self.request.GET.get('bedroom', None),
+			'price__lte': self.request.GET.get('max_price', None).replace(" ", ""),
+			'price__gte': self.request.GET.get('min_price', None).replace(" ", "")
 		}
 
 		arguments = {k:v for k,v in values_dict.items() if v}
@@ -54,8 +54,7 @@ class SearchListView(generics.ListAPIView):
 	
 		queryset = models.Listing.objects.annotate(
 			search=vector, rank=rank_parameters
-			).filter(search=query,
-					**arguments
-					).order_by('-rank')
-		print("queryset", values_dict, arguments, queryset)
+			).filter(search=query, **arguments).order_by('-rank')
+
+		print("queryset", arguments, queryset)
 		return queryset
