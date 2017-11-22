@@ -37,11 +37,15 @@ class SearchListView(generics.ListAPIView):
 
 	def get_queryset(self):
 		location = self.request.GET.get('location')
-		listing_type = self.request.GET.get('listing_type', 'listing_type')
-		bedroom = self.request.GET.get('bedroom', 'bedroom')
-		min_price = self.request.GET.get('min_price', 'min_price')
-		max_price = self.request.GET.get('max_price', 'max_price')
-		status = self.request.GET.get('status')
+		values_dict = {
+			'listing_type__iexact': self.request.GET.get('listing_type', None),
+			'status__iexact': self.request.GET.get('status', None),
+			#'bedroom': self.request.GET.get('bedroom', None),
+			#'price__lte': self.request.GET.get('max_price', None),
+			#'price__gte': self.request.GET.get('min_price', None)
+		}
+
+		arguments = {k:v for k,v in values_dict.items() if v}
 		
 		location = [SearchQuery(term) for term in location.split()]
 		query = functools.reduce(operator.or_, location)
@@ -51,11 +55,7 @@ class SearchListView(generics.ListAPIView):
 		queryset = models.Listing.objects.annotate(
 			search=vector, rank=rank_parameters
 			).filter(search=query,
-					status__iexact=status,
-					listing_type__iexact=listing_type
+					**arguments
 					).order_by('-rank')
-		print("queryset", queryset)
+		print("queryset", values_dict, arguments, queryset)
 		return queryset
-
-
-
