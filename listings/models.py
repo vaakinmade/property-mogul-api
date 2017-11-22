@@ -2,6 +2,7 @@ from django.db import models
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
+
 class Listing(models.Model):
 	created_at = models.DateTimeField(auto_now_add=True)
 	name = models.CharField(max_length=225)
@@ -37,7 +38,7 @@ class Listing(models.Model):
 		return self.name
 
 
-class Image(models.Model):
+class ListingImage(models.Model):
 	created_at = models.DateTimeField(auto_now_add=True)
 	listing = models.ForeignKey(Listing)
 	image = models.ImageField(upload_to='images/mogul', default='pic_folder/None/no-img.jpg')
