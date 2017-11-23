@@ -36,7 +36,6 @@ class SearchListView(generics.ListAPIView):
 	serializer_class = serializers.ListingSerializer
 
 	def get_queryset(self):
-		location = self.request.GET.get('location')
 		values_dict = {
 			'listing_type__iexact': self.request.GET.get('listing_type', None),
 			'status__iexact': self.request.GET.get('status', None),
@@ -47,12 +46,13 @@ class SearchListView(generics.ListAPIView):
 
 		input_list = ["", None, "Any Bed", "Max.", "Any Type", "Any Status"]
 		arguments = {k:v for k,v in values_dict.items() if v not in input_list}
-		
-		location = [SearchQuery(term) for term in location.split()]
-		query = functools.reduce(operator.or_, location)
+		location = self.request.GET.get('location', 'lagos')
+		location_list = [SearchQuery(term) for term in location.split()]
+
+		query = functools.reduce(operator.or_, location_list)
 		vector = SearchVector('name', 'address', 'town', 'state')
 		rank_parameters = SearchRank(vector, query)
-	
+
 		queryset = models.Listing.objects.annotate(
 			search=vector, rank=rank_parameters
 			).filter(search=query, **arguments).order_by('-rank')
