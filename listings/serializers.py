@@ -13,7 +13,7 @@ class ImageSerializer(serializers.ModelSerializer):
 
 class ListingSerializer(serializers.ModelSerializer):
 	listingimages = ImageSerializer(read_only=True, many=True)
-	added_by_user = serializers.ReadOnlyField(source='added_by.email')
+	added_by_user = serializers.ReadOnlyField(source='added_by.get_full_name')
 
 	class Meta:
 		extra_kwargs = {
