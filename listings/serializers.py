@@ -41,7 +41,7 @@ class ListingSerializer(serializers.ModelSerializer):
 
 class ListingDetailSerializer(serializers.ModelSerializer):
 	listingimages = ImageSerializer(read_only=True, many=True)
-	added_by_user = serializers.ReadOnlyField(source='added_by.email')
+	added_by_user = serializers.ReadOnlyField(source='added_by.get_full_name')
 
 	class Meta:
 		fields = (
