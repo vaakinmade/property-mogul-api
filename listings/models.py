@@ -37,10 +37,13 @@ class Listing(models.Model):
 	def __str__(self):
 		return self.name
 
+	def get_full_name(self):
+		return self.added_by.get_full_name()
+
 
 class ListingImage(models.Model):
 	created_at = models.DateTimeField(auto_now_add=True)
-	listing = models.ForeignKey(Listing)
+	listing = models.ForeignKey(Listing, related_name="listingimages")
 	image = models.ImageField(upload_to='images/mogul', default='pic_folder/None/no-img.jpg')
 
 	ORDER = []
