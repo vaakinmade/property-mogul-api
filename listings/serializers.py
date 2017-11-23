@@ -1,55 +1,64 @@
 from rest_framework import serializers
 
 from . import models
-
-
-class ListingSerializer(serializers.ModelSerializer):
-	class Meta:
-		extra_kwargs = {
-			'added_by': {'write_only': True},
-			'description': {'write_only': True},
-			'features': {'write_only': True}
-		}
-		fields = (
-			'name',
-			'address',
-			'town',
-			'state',
-			'status',
-			'listing_type',
-			'bedroom',
-			'price',
-			'added_by',
-		)
-		model = models.Listing
-
-
-class ListingDetailSerializer(serializers.ModelSerializer):
-	class Meta:
-		fields = (
-			'name',
-			'address',
-			'town',
-			'state',
-			'status',
-			'listing_type',
-			'bedroom',
-			'price',
-			'description',
-			'features',
-			'added_by',
-			'created_at'
-		)
-		model = models.Listing
-
+from django.contrib.auth.models import User
 
 class ImageSerializer(serializers.ModelSerializer):
 	class Meta:
 		fields = (
 			'image',
-			'listing',
-			'created_at'
+			'listing'
 		)
 		model = models.ListingImage
 
+class ListingSerializer(serializers.ModelSerializer):
+	listingimages = ImageSerializer(read_only=True, many=True)
+	added_by_user = serializers.ReadOnlyField(source='added_by.email')
+
+	class Meta:
+		extra_kwargs = {
+			'description': {'write_only': True},
+			'features': {'write_only': True},
+			'added_by': {'write_only': True},
+		}
+		fields = (
+			'id',
+			'name',
+			'address',
+			'town',
+			'state',
+			'status',
+			'listing_type',
+			'bedroom',
+			'price',
+			'listingimages',
+			'added_by',
+			'added_by_user',
+			'created_at'
+		)
+		model = models.Listing
+
+
+class ListingDetailSerializer(serializers.ModelSerializer):
+	listingimages = ImageSerializer(read_only=True, many=True)
+	added_by_user = serializers.ReadOnlyField(source='added_by.email')
+
+	class Meta:
+		fields = (
+			'id',
+			'name',
+			'address',
+			'town',
+			'state',
+			'status',
+			'listing_type',
+			'bedroom',
+			'price',
+			'listingimages',
+			'description',
+			'features',
+			'added_by_user',
+			'created_at'
+		)
+		model = models.Listing
 
