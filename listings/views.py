@@ -41,11 +41,12 @@ class SearchListView(generics.ListAPIView):
 			'listing_type__iexact': self.request.GET.get('listing_type', None),
 			'status__iexact': self.request.GET.get('status', None),
 			'bedroom': self.request.GET.get('bedroom', None),
-			'price__lte': self.request.GET.get('max_price', None).replace(" ", ""),
-			'price__gte': self.request.GET.get('min_price', None).replace(" ", "")
+			'price__lte': self.request.GET.get('max_price', "").replace(" ", ""),
+			'price__gte': self.request.GET.get('min_price', "").replace(" ", "")
 		}
 
-		arguments = {k:v for k,v in values_dict.items() if v}
+		input_list = ["", None, "Any Bed", "Max.", "Any Type", "Any Status"]
+		arguments = {k:v for k,v in values_dict.items() if v not in input_list}
 		
 		location = [SearchQuery(term) for term in location.split()]
 		query = functools.reduce(operator.or_, location)
@@ -55,5 +56,4 @@ class SearchListView(generics.ListAPIView):
 		queryset = models.Listing.objects.annotate(
 			search=vector, rank=rank_parameters
 			).filter(search=query, **arguments).order_by('-rank')
-
 		return queryset
