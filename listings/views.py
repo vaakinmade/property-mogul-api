@@ -56,5 +56,4 @@ class SearchListView(generics.ListAPIView):
 			search=vector, rank=rank_parameters
 			).filter(search=query, **arguments).order_by('-rank')
 
-		print("queryset", arguments, queryset)
 		return queryset
