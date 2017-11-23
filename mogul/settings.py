@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 from decouple import config
+import dj_database_url
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -29,6 +30,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+PORT = config('PORT', default=5000, cast=int)
 
 # Application definition
 
@@ -74,7 +76,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mogul.wsgi.application'
 
-if 'DYNO' not in os.environ:
+if 'DYNO' in os.environ:
     AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME', cast=str)
     AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID', cast=str)
     AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY', cast=str)
