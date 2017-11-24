@@ -4,11 +4,16 @@ from . import models
 from django.contrib.auth.models import User
 
 class ImageSerializer(serializers.ModelSerializer):
+	listing = serializers.PrimaryKeyRelatedField(queryset=models.Listing.objects.all())
 	class Meta:
+		extra_kwargs = {
+			'ordering': {'write_only': True},
+		}
 		fields = (
 			'id',
 			'image',
-			'listing'
+			'listing',
+			'ordering'
 		)
 		model = models.ListingImage
 
