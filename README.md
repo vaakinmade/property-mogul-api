@@ -2,10 +2,10 @@
 A DRF property listing service
 
 ## Endpoints
-#### Property Search
-https://mogul-api.herokuapp.com/api/v1/listings/search?{parameters} 
-e.g.
-https://mogul-api.herokuapp.com/api/v1/listings/search?location=abuja
+#### Search Properties
+https://mogul-api.herokuapp.com/api/v1/listings/search?{parameters}  
+E.g.  
+https://mogul-api.herokuapp.com/api/v1/listings/search?location=abuja  
 https://mogul-api.herokuapp.com/api/v1/listings/search?location=lagos&listing_type=houses
 
 ### List Properties
