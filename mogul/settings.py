@@ -26,11 +26,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'qfyvpon-^%+h8gqg%i&w%4sl^axp^5!bah3t0+a_h@qddg=q*2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = ['localhost', '.herokuapp.com', '127.0.0.1']
 
-PORT = config('PORT', default=5000, cast=int)
+PORT = config('PORT', default=5050, cast=int)
 
 # Application definition
 
