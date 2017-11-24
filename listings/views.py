@@ -40,6 +40,14 @@ class RentListView(generics.ListAPIView):
 		return queryset
 
 
+class SaleListView(generics.ListAPIView):
+	serializer_class = serializers.ListingSerializer
+
+	def get_queryset(self):
+		queryset = models.Listing.objects.filter(status__iexact="for sale")
+		return queryset
+
+
 class SearchListView(generics.ListAPIView):
 	serializer_class = serializers.ListingSerializer
 
@@ -51,10 +59,10 @@ class SearchListView(generics.ListAPIView):
 			'price__lte': self.request.GET.get('max_price', "").replace(" ", ""),
 			'price__gte': self.request.GET.get('min_price', "").replace(" ", "")
 		}
-		input_list = ["", None, "Any Bed", "Max.", "Any Type", "Any Status"]
-		arguments = {k:v for k,v in values_dict.items() if v not in input_list}
+		form_input = ["", None, "Any Bed", "Max.", "Any Type", "Any Status"]
+		arguments = {k:v for k,v in values_dict.items() if v not in form_input}
 
-		location = self.request.GET.get('location')
+		location = self.request.GET.get('location').strip()
 		if location != "" and location is not None:
 			location_query_list = [SearchQuery(term) for term in location.split()]
 		else:
