@@ -19,3 +19,9 @@ https://mogul-api.herokuapp.com/api/v1/listings/images
 
 ### Get Property Image
 https://mogul-api.herokuapp.com/api/v1/listings/image/{id}
+
+### List Rent Properties
+https://mogul-api.herokuapp.com/api/v1/listings/rent
+
+### List Sale Properties
+https://mogul-api.herokuapp.com/api/v1/listings/sale
