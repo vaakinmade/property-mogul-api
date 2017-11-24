@@ -43,13 +43,17 @@ class SearchListView(generics.ListAPIView):
 			'price__lte': self.request.GET.get('max_price', "").replace(" ", ""),
 			'price__gte': self.request.GET.get('min_price', "").replace(" ", "")
 		}
-
 		input_list = ["", None, "Any Bed", "Max.", "Any Type", "Any Status"]
 		arguments = {k:v for k,v in values_dict.items() if v not in input_list}
-		location = self.request.GET.get('location', 'lagos')
-		location_list = [SearchQuery(term) for term in location.split()]
 
-		query = functools.reduce(operator.or_, location_list)
+		location = self.request.GET.get('location')
+		if location != "" and location is not None:
+			location_query_list = [SearchQuery(term) for term in location.split()]
+		else:
+			queryset = models.Listing.objects.filter(**arguments)
+			return queryset	
+
+		query = functools.reduce(operator.or_, location_query_list)
 		vector = SearchVector('name', 'address', 'town', 'state')
 		rank_parameters = SearchRank(vector, query)
 
