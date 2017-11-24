@@ -50,7 +50,7 @@ class SearchListView(generics.ListAPIView):
 		if location != "" and location is not None:
 			location_query_list = [SearchQuery(term) for term in location.split()]
 		else:
-			queryset = models.Listing.objects.filter(**arguments)
+			queryset = models.Listing.objects.filter(**arguments).order_by('id')
 			return queryset	
 
 		query = functools.reduce(operator.or_, location_query_list)
