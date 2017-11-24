@@ -32,6 +32,14 @@ class ListCreateImage(generics.ListCreateAPIView):
 	serializer_class = serializers.ImageSerializer
 
 
+class RentListView(generics.ListAPIView):
+	serializer_class = serializers.ListingSerializer
+
+	def get_queryset(self):
+		queryset = models.Listing.objects.filter(status__iexact="for rent")
+		return queryset
+
+
 class SearchListView(generics.ListAPIView):
 	serializer_class = serializers.ListingSerializer
 
